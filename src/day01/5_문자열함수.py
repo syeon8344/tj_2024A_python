@@ -54,4 +54,4 @@ e.replace("Program", "프로그램")
 print(e)  # Python Program : replace 적용되지 않는다
 
 # 새로운 문자열을 변수명에 대입 : 변수가 참조하는 문자열이 변경되었다(O)
-e = "파이썬 Program"  # 기존 문자열은 수정돼지 않았다
+e = "파이썬 Program"  # 기존 문자열은 수정되지 않았다
