@@ -212,3 +212,5 @@ def vartest():
 
 b = vartest()
 print(b)
+
+# 9) 람다 lambda TODO
