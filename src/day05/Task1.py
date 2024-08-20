@@ -28,8 +28,9 @@ def name_read():
 
 
 def name_update():
+    global names
     name_input = input("이름을 입력해주세요 : ")
-    if name_input in names:  # 이름이 names 문자열 안에 있으면 .replace(바꿀 문자열, 새 문자열)
+    if names.count(name_input) >= 1:  # 이름이 names 문자열 안에 있으면 .count()가 1 이상, .replace(바꿀 문자열, 새 문자열)
         new_names = names.replace(name_input, input("새 이름을 입력해주세요 : "))
         print("이름 수정 완료.")
         return new_names
