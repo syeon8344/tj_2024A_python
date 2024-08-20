@@ -8,6 +8,9 @@
 # [조건3] : names 외 전역변수 생성 X
 # [조건4] : 최대한 리스트 타입 사용하지 않기
 
+# 하나의 변수에 여러 가지 정보 : 1. JSON [키:값] 2. CSV [,] 주로 문자열 타입 사용
+# "aaa,bbb,ccc"
+
 names = ""  # 여러개의 name을 저장하는 문자열, global 사용 X
 
 
@@ -58,7 +61,7 @@ while True:  # 무한루프
     ch = input('1)Create 2)Read 3)Update 4)Delete : ')
     if ch == "1":
         names = name_create()
-    elif ch == "2":
+    elif int(ch) == 2:
         name_read()
     elif ch == "3":
         names = name_update()
