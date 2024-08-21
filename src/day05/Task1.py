@@ -11,7 +11,7 @@
 # 하나의 변수에 여러 가지 정보 : 1. JSON [키:값] 2. CSV [,] 주로 문자열 타입 사용
 # "aaa,bbb,ccc"
 
-names = ""  # 여러개의 name을 저장하는 문자열, global 사용 X
+names = ""  # 여러개의 name을 저장하는 문자열, 문자열은 불변이므로 새로운 문자열을 변수에 할당하는 등 작업 필요
 
 
 def name_create():
