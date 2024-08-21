@@ -8,11 +8,11 @@
 # [조건3] : names 외 전역변수 생성 X
 
 # 전역 변수
-names = []  # 샘플 데이터
+names = []  # 객체를 담는 리스트
 
 
 class NameAge:
-    def __init__(self, name, age):
+    def __init__(self, name, age):  # self = 생성된 객체 자신
         self.name = name
         self.age = age
 
@@ -35,9 +35,9 @@ def name_read():
 def name_update():
     global names
     old_name = input("old name : ")
-    updated = False
+    updated = False  # 오류 메시지를 위한 체크 변수
     for o in names:
-        if o.name == old_name:
+        if o.name == old_name:  # 객체마다 순회하며 찾는 값을 가진 객체가 있으면
             o.name = input("new name : ")
             o.age = int(input("new age : "))
             updated = True
@@ -51,9 +51,9 @@ def name_update():
 def name_delete():
     global names
     delete_name = input("delete name : ")
-    deleted = False
+    deleted = False  # 오류 메시지를 위한 체크 변수
     for o in names:
-        if o.name == delete_name:
+        if o.name == delete_name:  # 객체마다 순회하며 찾는 값을 가진 객체가 있으면
             names.remove(o)
             deleted = True
             print("삭제 완료.")
