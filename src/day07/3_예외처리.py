@@ -33,7 +33,7 @@ finally:
     print("always executed")
 
 # [5] 다중 except
-try:
+try:  # try 안에서 예외가 발생하면 바로 아래로 넘어가므로 예외처리는 0번 또는 1번 실행된다.
     # print(4/0)
     int("a")
 except IndexError as e:  # IndexError 발생 시 코드
