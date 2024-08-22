@@ -63,19 +63,24 @@ def name_delete():
     return
 
 
-while True:  # :과 들여쓰기로 구분, true가 아니라 True 첫글자 대문자로 작성
-    try:
-        ch = int(input('1)Create 2)Read 3)Update 4)Delete : '))  # ch = 변수명, 타입 지정은 하지 않음 int(): 정수로 타입 변환 함수, input(): 입력함수, 입력받은 데이터를 문자열로 반환
-    except Exception:
-        continue
-    if ch == 1:  # if 조건문
-        # 주의점: 들여쓰기
-        name_create()
-    # 들여쓰기 1번: while문
+# import Task6 -> Task6.__name__ = 'Task6'
+# import될 경우에는 __name__이 __main__이 아니므로 실행되지 않을 부분
+# 파일을 직접 실행하면 실행되는 구역, java main함수와 비슷하다
+if __name__ == "__main__":
+    while True:  # :과 들여쓰기로 구분, true가 아니라 True 첫글자 대문자로 작성
+        try:
+            ch = int(input(
+                '1)Create 2)Read 3)Update 4)Delete : '))  # ch = 변수명, 타입 지정은 하지 않음 int(): 정수로 타입 변환 함수, input(): 입력함수, 입력받은 데이터를 문자열로 반환
+        except Exception:
+            continue
+        if ch == 1:  # if 조건문
+            # 주의점: 들여쓰기
+            name_create()
+        # 들여쓰기 1번: while문
         # 들여쓰기 2번: if문에 포함
-    elif ch == 2:
-        name_read()
-    elif ch == 3:
-        name_update()
-    elif ch == 4:
-        name_delete()
+        elif ch == 2:
+            name_read()
+        elif ch == 3:
+            name_update()
+        elif ch == 4:
+            name_delete()
