@@ -5,7 +5,7 @@ from flask_cors import CORS  # 3) CORS 모듈 가져오기
 CORS(app)  # 4) 모든 HTTP 경로에 CORS 허용
 
 # 5) HTTP 매핑, controller 호출
-from controller import *;
+from controller import *
 
 
 # 6) Flask 실행
