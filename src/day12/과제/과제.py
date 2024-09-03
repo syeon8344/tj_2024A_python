@@ -9,6 +9,8 @@ from flask_cors import CORS
 import pandas as pd
 import json
 
+import matplotlib.pyplot as plt
+
 app = Flask(__name__)
 CORS(app)
 
@@ -58,6 +60,22 @@ def vehicle_type():
     result.append(round((df["전기차종류"].value_counts(normalize=True)*100), 1).tolist())
     return result
 
+
+points = df['차량위치'].tolist()
+x = []
+y = []
+print(points)
+for item in points:
+    if not item or type(item) == float:
+        continue
+    xy_list = item.lstrip("POINT (").rstrip(")").split()
+    x.append(eval(xy_list[0]))
+    y.append(eval(xy_list[1]))
+# print(x)
+# print(y)
+
+plt.scatter(x, y)
+plt.show()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
