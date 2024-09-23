@@ -15,13 +15,13 @@
                 - 엔트로피: 정보 이득 지수(1-엔트로피, 혼잡도가 줄어들어 얻는 이득)가 높은 피처를 분할 기준으로
                     e.g. 과일 주스: 여러 과일이 섞여있으면 혼잡도 높음, 엔트로피가 높다
                     => 불확실성 측정 지표, 값이 낮을수록 분류가 잘 된다
-                - 지니 계수: 지니 계수(데이터 순도, 낮을수록 데이터 순도가 높다)가 낮은 피처를 분할 기준으로
+                - 지니 계수: 지니 계수(데이터 순도, 낮을수록 데이터 순도가 높다)가 낮은 피처를 분할 기준으로 (결정트리함수 기본)
                     e.g. 과일 주스: 사과맛만 느껴지면 예측이 쉽고 혼잡도가 낮다, 지니 계수가 낮다
                     => 불순도 측정 지표, 값이 낮을수록 분류가 잘 된다
 """
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier  # 모델 호출
-import matplotlib.pyplot as py
+import matplotlib.pyplot as plt
 from sklearn import tree
 # [1] 데이터 샘플
 data = {
@@ -60,7 +60,7 @@ print(accuracy)  # 0.6666666666666666
 # [6] 확인
 print(model.get_depth())  # 4, 트리의 깊이
 print(model.get_n_leaves())  # 6, 리프 노드의 개수
+
 # [7] 시각화
-import matplotlib.pyplot as plt
 tree.plot_tree(model, feature_names=['size', 'color'], class_names=['apple', 'orange', 'banana'])
 plt.show()
