@@ -39,6 +39,10 @@ y_test = pd.read_csv("UCI_HAR_Dataset/test/Y_test.txt", sep=r"\s+", header=None,
 # print(y_train['action'].value_counts())
 # 3. 레이블명
 label_name_df = pd.read_csv("UCI_HAR_Dataset/activity_labels.txt", sep=r"\s+", header=None, names=["index", "label"],engine="python")
+# 데이터프레임객체.iloc[행 슬라이싱]
+# 데이터프레임객체.iloc[행 슬라이싱, 열번호]
+# feature_name_df.iloc[:]: 모든 행, feature_name_df.iloc[:, 1]: 모든 행의 두번째 열 (첫번째 열 제외)
+# .values 열의 모든 값들을 추출, .tolist() 리스트로 반환 함수
 label_name = label_name_df.iloc[:, 1].values.tolist()
 # print(label_name)
 # 데이터 수집 정리
@@ -78,6 +82,7 @@ print(f"결정 트리의 현재 하이퍼 매개변수: {dt_HAR.get_params()}")
 # 모델 성능 개선: GridSearchCV
 # "max_depth": [6, 8, 10, 12, 16, 20, 24]의 경우 최고 평균 정확도: 0.8513, 최적 하이퍼 매개변수: {'max_depth': 16}
 # 최고 평균 정확도: 0.8549, 최적 하이퍼 매개변수: {'max_depth': 8, 'min_samples_split': 16}
+# params - depth:트리의 깊이, max_depth:최대 트리의 깊이, criterion:노드 결정 방식
 params = {"max_depth": [8, 16, 20], 'min_samples_split': [8, 16, 24]}
 grid_cv = GridSearchCV(dt_HAR, param_grid=params, scoring="accuracy", cv=5, return_train_score=True)
 """
