@@ -148,8 +148,10 @@ print(y_test[:10])
 
 # [3-12] 시각화
 def get_result(index):
-    img, y_value, y_pred, confidence = (x_test[index], y_test[index], np.argmax(y_predict[index]),
-                                        100 * np.max(y_predict[index]))
+    img = x_test[index]
+    y_value = y_test[index]
+    y_pred = np.argmax(y_predict[index])
+    confidence = 100 * np.max(y_predict[index])
     return img, y_value, y_pred, confidence
 
 
