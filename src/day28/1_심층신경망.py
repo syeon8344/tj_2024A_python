@@ -61,7 +61,9 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(256, activation="relu"),  # 은닉층
     tf.keras.layers.Dense(64, activation="relu"),  # 은닉층
     tf.keras.layers.Dense(32, activation="relu"),  # 은닉층
-    #
+    # 각 레이어들 간의 연결된 완전연결층
+    # 각 256, 64, 32개의 노드를 가지는 은닉층 3개
+    # 각 relu는 비선형성 활성화 함수 적용
     tf.keras.layers.Dense(10, activation="softmax")  # 출력층, 종속변수 10개, 분류 모델
     # 정답: 0 ~ 9 사이 손글씨 정답, e.g. 0 또는 1 또는 ... 9
 ])
