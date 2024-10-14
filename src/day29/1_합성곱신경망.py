@@ -87,19 +87,21 @@ def plot_loss_acc(history, epoch):
 
 # plot_loss_acc(history, 10)
 
-# 모델 구조
-model.summary()
 
 # 11. 훈련된 모델로 예측
 predictions = model.predict(x_test_color)
 print(predictions[0])  # 첫번째 예측
 print(np.argmax(predictions[0]))  # 첫번째 예측 리스트의 최댓값 인덱스 (=예측값), 7
 print(y_test[0])  # 7
-# # 모델 입력 텐서 형태
-# print(model.inputs)
-#
-# # 모델 출력 텐서 형태
-# print(model.output)
+
+# 12. 모델 구조
+model.summary()
+
+# 모델 입력 텐서 형태
+print(model.inputs)
+
+# 모델 출력 텐서 형태
+print(model.outputs)
 
 # 모델 레이어
 print(model.layers)
@@ -109,19 +111,20 @@ print(model.layers)
 """
 print(model.layers[0])  # <Conv2D name=conv, built=True>
 
-# 첫번째 레이어 입출력, 가중치, 커널 가중치, bias 가중치
-print(model.layers[0].input)
-print(model.layers[0].output)
-print(model.layers[0].weights)
-print(model.layers[0].kernel)
-print(model.layers[0].bias)
+# 첫번째 레이어 입출력, 가중치, 커널 가중치, bias 가중치 (상수항)
+print(model.layers[0].input)  # <KerasTensor shape=(None, 28, 28, 1), dtype=float32, sparse=False, name=keras_tensor>
+print(model.layers[0].output)  # <KerasTensor shape=(None, 26, 26, 32), dtype=float32, sparse=False, name=keras_tensor_1>
+print(model.layers[0].weights)  # [<KerasVariable shape=(3, 3, 1, 32), dtype=float32, path=sequential/conv/kernel>, <KerasVariable shape=(32,), dtype=float32, path=sequential/conv/bias>]
+print(model.layers[0].kernel)  # <KerasVariable shape=(3, 3, 1, 32), dtype=float32, path=sequential/conv/kernel>
+print(model.layers[0].bias)  # <KerasVariable shape=(32,), dtype=float32, path=sequential/conv/bias>
 
 # 레이어 이름으로 선택
 print(model.get_layer('conv'))
 
 # 샘플 이미지의 레이어 별 출력을 리스트에 추가하기 (1,2번째 레이어)
+# list comprehension: [표현식 for 반복변수 in 리스트/range()]
 activator = tf.keras.Model(inputs=model.inputs, outputs=[layer.output for layer in model.layers[:2]])
-activations = activator.predict(x_test_color[0][tf.newaxis, ...])
+activations = activator.predict(x_train_color[0][tf.newaxis, ...])  # 입력 shape 맞추기 (28, 28, 1) -> (1, 28, 28, 1)
 len(activations)  # 출력값 2개
 
 # 첫 번째 레이어 (conv) 출력층
@@ -131,10 +134,26 @@ print(conv_activation.shape)  # (1, 26, 26, 32)
 # Convolution 시각화
 plt.figure(figsize=(10, 10))
 for i in range(32):
-    plt.subplot(4, 8, i+1)
+    plt.subplot(4, 8, i + 1)
     plt.imshow(conv_activation[0, :, :, i], cmap='viridis')
     plt.axis('off')
-    plt.title(f'Kernel {i+1}')
+    plt.title(f'Kernel {i + 1}')
 plt.tight_layout()
 plt.show()
 
+# 풀링 레이어 출력층
+max_pool_activation = activations[1]
+print(max_pool_activation.shape)  # (1, 13, 13, 32)
+
+# Max Pooling 레이어 시각화
+fig, axes = plt.subplots(4, 8)
+fig.set_size_inches(10, 5)
+
+for i in range(32):
+    axes[i // 8, i % 8].matshow(max_pool_activation[0, :, :, i], cmap='viridis')
+    axes[i // 8, i % 8].set_title(f"kernel {i}", fontsize=10)
+    plt.setp(axes[i // 8][i % 8].get_xticklabels(), visible=False)
+    plt.setp(axes[i // 8][i % 8].get_yticklabels(), visible=False)
+
+plt.tight_layout()
+plt.show()
