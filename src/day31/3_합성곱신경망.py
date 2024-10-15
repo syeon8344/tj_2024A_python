@@ -1,7 +1,7 @@
 # day31 > 3_합성곱신경망.py  # Functional API
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
+import cv2
 
 # 1. 데이터셋 로드: 의류 mnist (10종류 의류 데이터셋)
 fashion_mnist = tf.keras.datasets.fashion_mnist
@@ -39,7 +39,7 @@ print(model.summary())
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # 6. 모델 훈련
-history = model.fit(x_train_co, y_train, epochs=1, validation_data=(x_test_co, y_test))
+history = model.fit(x_train_co, y_train, epochs=10, validation_data=(x_test_co, y_test))
 
 # 7. 모델 평가
 print(model.evaluate(x_test_co, y_test))
@@ -50,3 +50,18 @@ y_pred = model.predict(x_test_co)
 print(y_pred.shape)  # (10000, 10)
 # np.argmax(axis=-1): 가장 오른쪽 차원 (벡터 배열)
 print(np.argmax(y_pred, axis=-1)[:10])
+
+# OpenCV를 사용하여 인터넷 패션 이미지를 하나 예측해서 해당 이미지와 결과가 동일하도록 하시오.
+
+image_path = 'bag.jfif'  # your image path
+image = cv2.imread(image_path)
+# 이미지 단일채널 그레이스케일화
+image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# 이미지 크기 변경 및 정규화
+image = cv2.resize(image, (28, 28)) / 255.0
+# 색상 채널 추가
+image = image[..., tf.newaxis]
+print(image.shape)
+# 예측 결과
+result = model.predict(image[tf.newaxis, ...])
+print(class_names[np.argmax(result[0])])

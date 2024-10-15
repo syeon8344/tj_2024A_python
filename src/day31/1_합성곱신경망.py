@@ -96,7 +96,7 @@ plot_model(model, show_shapes=True, show_layer_names=True, to_file='functional_c
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # 7. 모델 훈련
-history = model.fit(x_train_color, y_train, epochs=10, validation_data=(x_valid_color, y_valid))
+# history = model.fit(x_train_color, y_train, epochs=10, validation_data=(x_valid_color, y_valid))
 
 # 8. 모델 평가
 val_loss, val_acc = model.evaluate(x_valid_color, y_valid)
@@ -138,7 +138,7 @@ model.compile(optimizer='adam', loss={'digit_dense': 'sparse_categorical_crossen
               loss_weights={'digit_dense': 1, 'odd_dense': 0.5}, metrics=['accuracy', 'accuracy'])
 
 # 모델 훈련: 다중 출력시 훈련용과 검증용이 다중이므로 {'출력레이어명': 출력레이어변수} 딕셔너리 구조로 입력
-history = model.fit({'inputs': x_train_color}, {'digit_dense': y_train, 'odd_dense': y_train_odd}, epochs=10,
+history = model.fit({'inputs': x_train_color}, {'digit_dense': y_train, 'odd_dense': y_train_odd}, epochs=3,
                     validation_data=({'inputs': x_valid_color}, {'digit_dense': y_valid, 'odd_dense': y_valid_odd}))
 
 # 모델 평가
@@ -153,7 +153,7 @@ def plot_image(data, index):
     plt.show()
 
 
-plot_image(x_valid, 0)
+# plot_image(x_valid, 0)
 
 # 모델 예측
 digit_preds, odd_preds = model.predict(x_valid_color)
@@ -168,3 +168,51 @@ print(digit_labels[0:10])
 odd_labels = (odd_preds > 0.5).astype(np.int32).reshape(1, -1)[0]
 print(odd_labels[0:10])
 
+
+# day31 > 1_합성곱신경망.py
+# 전이학습
+# 레이어 name 속성을 사용하여 flatten_layer까지의 모델 추출
+base_model_output = model.get_layer('flatten_layer').output
+# 앞의 출력을 출력으로 하는 모델 정의
+base_model = tf.keras.models.Model(inputs=model.input, outputs=base_model_output, name='base')
+print(base_model.summary())
+# 모델 시각화
+plot_model(base_model, show_shapes=True, show_layer_names=True, to_file='base_model.png')
+# Sequential API
+digit_model = tf.keras.Sequential([
+    base_model,
+    tf.keras.layers.Dense(10, activation='softmax'),
+    ])
+print(digit_model.summary())
+# 모델 구조
+plot_model(digit_model, show_shapes=True, show_layer_names=True, to_file='digit_model.png')
+# 모델 컴파일
+digit_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# 모델 훈련
+history = digit_model.fit(x_train_color, y_train, epochs=3, validation_data=(x_valid_color, y_valid))
+
+# 베이스 모델 가중치 고정하기 (Freeze Model)
+base_model_frozen = tf.keras.models.Model(inputs=model.input, outputs=base_model_output, name='base_frozen')
+base_model_frozen.trainable = False
+base_model_frozen.summary()
+# Functional API
+dense_output = tf.keras.layers.Dense(10, activation='softmax')(base_model_frozen.output)
+digit_model_frozen = tf.keras.models.Model(inputs=base_model_frozen.input, outputs=dense_output)
+print(digit_model_frozen.summary())
+# 모델 컴파일
+digit_model_frozen.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# 모델 훈련
+history = digit_model_frozen.fit(x_train_color, y_train, epochs=3, validation_data=(x_valid_color, y_valid))
+
+# 베이스 모델의 Conv2D 레이어의 가중치만 고정(Freeze Layer)
+base_model_frozen2 = tf.keras.models.Model(inputs=model.input, outputs=base_model_output, name="base_frozen2")
+base_model_frozen2.get_layer('conv2d_layer').trainable = False
+base_model_frozen2.summary()
+# Functional API 적용
+dense_output2 = tf.keras.layers.Dense(10, activation='softmax')(base_model_frozen2.output)
+digit_model_frozen2 = tf.keras.models.Model(inputs=base_model_frozen2.input, outputs=dense_output2)
+print(digit_model_frozen2.summary())
+# 모델 컴파일
+digit_model_frozen2.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# 모델 훈련
+history = digit_model_frozen2.fit(x_train_color, y_train, epochs=3, validation_data=(x_valid_color, y_valid))
