@@ -208,10 +208,10 @@ aug_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metr
 # plot_loss_acc(aug_history, 20)
 
 # ResNet 사전 학습 모델
-pretrained_base_model = tf.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(64, 64, 3))
-pretrained_base_model.trainable = False  # ResNet50의 가중치 고정
+pretrained_base_model = tf.keras.applications.ResNet50V2(weights='imagenet', include_top=False, input_shape=(64, 64, 3))
+pretrained_base_model.trainable = False  # ResNet50V2의 가중치 고정
 
-plot_model(pretrained_base_model, show_shapes=True, show_layer_names=True, to_file='resnet50.png')
+plot_model(pretrained_base_model, show_shapes=True, show_layer_names=True, to_file='resnet50v2.png')
 
 
 # Top층 Classifier 추가
