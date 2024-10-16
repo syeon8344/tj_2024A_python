@@ -16,7 +16,7 @@ fig.set_size_inches(8, 5)
 image_no = 0
 for i in range(3):  # 또는 ax = axes[i//5, i%5] -> [5로 나눈 몫(행), 5로 나눈 나머지(열)]
     for j in range(5):
-        axes[i][j].imshow(x_train[image_no], cmap='grey')  # imgshow(): 이미지를 차트에 출력
+        axes[i][j].imshow(x_train[image_no], cmap='ocean')  # imgshow(): 이미지를 차트에 출력
         axes[i][j].set_title(str(y_train[image_no]))  # 정답을 제목으로
         axes[i][j].axis('off')  # 축 표시 끄기
         image_no += 1

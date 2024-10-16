@@ -1,0 +1,36 @@
+딥러닝 연산 처리 방법: 1. CPU(중앙처리장치), 2. GPU(그래픽카드)
+    - 딥러닝은 대부분 행렬곱(다차원) 연산이므로 주로 GPU가 효율적
+    - GTX 1050 이상
+    - 사용방법
+        1. 좋은 그래픽카드와 대량의 메모리 (교육, 강의에선 한정적)
+        2. 구글 코랩 사용
+
+텐서플로 GPU 설치
+    - 공식 페이지: https://www.tensorflow.org/install/source_windows?hl=ko#gpu
+    1. 환경 고려 (윈도우 환경일 시)
+    버전	              파이썬 버전	컴파일러	    빌드 도구	cuDNN	쿠다
+    tensorflow_gpu-2.10.0	3.7-3.10	MSVC 2019	바젤 5.1.1	 8.1	11.2
+
+    2. 파이썬 3.8 64비트 설치
+
+    3. 파이참에서 파이썬 버전 확인 및 변경
+        python 3.12 -> 3.8로 변경
+        1. 파이참 상단 메뉴 -> 파일 -> 설정
+        2. 인터프리터 추가 -> 로컬 인터프리터 -> 시스템 인터프리터
+
+    4. NVIDIA CUDA
+
+    5. cuDNN
+        - 받은 압축파일 내 폴더 3개를 CUDA 폴더 -> 버전 폴더 안에 각각 폴더와 합치기
+
+    6. tensorflow-gpu 2.10
+
+    7. 리부트 후 테스트
+        print(f'gpu: {tf.test.gpu_device_name()}')  # gpu: /device:GPU:0
+
+    * 문제 해결
+        1. Graph execution error ... sequential/dense/MatMul ...
+            그래픽카드 드라이버 업데이트/재설치
+        2. 'utf-8' ... invalid start byte...
+            dataset/ 다운로드 폴더 위치 다시 지정, 경로상 한글 X 등
+

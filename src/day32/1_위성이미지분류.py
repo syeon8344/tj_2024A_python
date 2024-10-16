@@ -48,6 +48,8 @@ test_data = test_ds.map(preprocess_data, num_parallel_calls=tf.data.AUTOTUNE)
 # .cache(): 캐시(기록), 검증 데이터셋 메모리를 캐시하고 한번 호출된 검증 데이터는 다음에 호출할 시 빠르게 접근할 수 있도록 한다.
 train_data = train_data.shuffle(BUFFER_SIZE).batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
 test_data = test_data.batch(BATCH_SIZE).cache().prefetch(tf.data.AUTOTUNE)
+for images, labels in train_data.take(1):
+    print("Shape of train_data batch:", images.shape)  # (64, 64, 64, 3) 배치크기, 높이, 폭, 색상채널
 # 3. 데이터 분할: 데이터셋 로드시 설정됨
 
 
@@ -80,7 +82,7 @@ model = build_model()
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # 6. 모델 훈련/학습: 최적 하이퍼파라미터 찾기
-history = model.fit(train_data, validation_data=test_data, epochs=50)
+history = model.fit(train_data, validation_data=test_data, epochs=5)
 
 
 # 7. 모델 평가
@@ -103,6 +105,22 @@ def plot_loss_acc(history, epoch):
     plt.show()
 
 
-plot_loss_acc(history, 50)
+plot_loss_acc(history, 5)
 
 # 8. 모델 예측
+for images, labels in test_ds.take(1):
+    test_image = images
+    real_label = labels
+# Preprocess the image
+test_image = tf.expand_dims(test_image, axis=0)  # Add a batch dimension
+test_image = tf.cast(test_image, tf.float32) / 255.0  # Normalize the image
+
+# Get the predicted probabilities for each class
+predictions = model.predict(test_image)
+
+# Convert the predicted probabilities to class labels
+predicted_label = np.argmax(predictions[0])
+
+# Compare the predicted label with the real label
+print("Predicted label:", info.features["label"].int2str(predicted_label))
+print("Real label:", info.features["label"].int2str(real_label))
