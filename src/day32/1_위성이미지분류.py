@@ -82,7 +82,7 @@ model = build_model()
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
 # 6. 모델 훈련/학습: 최적 하이퍼파라미터 찾기
-history = model.fit(train_data, validation_data=test_data, epochs=5)
+history = model.fit(train_data, validation_data=test_data, epochs=50)
 
 
 # 7. 모델 평가
@@ -105,7 +105,7 @@ def plot_loss_acc(history, epoch):
     plt.show()
 
 
-plot_loss_acc(history, 5)
+plot_loss_acc(history, 50)
 
 # 8. 모델 예측
 for images, labels in test_ds.take(1):
